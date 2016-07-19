@@ -15,55 +15,87 @@ function Adventurer(name, xCord, yCord, health, items, str, dex, wit) {
 }
 
 Adventurer.prototype.north = function() {
-  this.yCord += 1;
+  if (player.yCord > 4) {
+    this.health -= 1;
+    console.log(player);
+  } else {
+    this.yCord += 1;
+    console.log(player);
+  }
 };
 
 Adventurer.prototype.south = function() {
-  this.yCord -= 1;
+  if (player.yCord < 0) {
+    this.health -= 1;
+    console.log(player);
+  } else {
+    this.yCord -= 1;
+    console.log(player);
+  }
 };
 
 Adventurer.prototype.east = function() {
-  this.xCord += 1;
+  if (player.xCord > 4) {
+    this.health -= 1;
+    console.log(player);
+  } else {
+    this.xCord += 1;
+    console.log(player);
+  }
 };
 
 Adventurer.prototype.west = function() {
-  this.xCord -= 1;
+  if (player.xCord < 0) {
+    this.health -= 1;
+    console.log(player);
+  } else {
+    this.xCord -= 1;
+    console.log(player);
+  }
 };
+
+Adventurer.prototype.death = function() {
+  if (this.health < 1) {
+    alert("You Have Died of Dysentery")
+  }
+}
+
 
 // Attribute Generator to Define Initial Player Attributes.
 var attributeGen = function() {
   return 1 + Math.floor(Math.random() * 4);
 }
 
-
+var items = [];
+var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
 
 
 // User Interface Logic
 
 
-$(document).ready(function(event) {
-  event.preventDefault();
+$(document).ready(function() {
+
   // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
-  var items = [];
-  var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
 
   $("#north").click(function() {
     player.north();
-    console.log("north");
+    player.death();
   });
 
   $("#east").click(function() {
     player.east();
-    console.log("east");
+    player.death();
   });
 
   $("#south").click(function() {
     player.south();
-    console.log("south");
+    player.death();
   });
 
   $("#west").click(function() {
     player.west();
-    console.log("west");
+    player.death();
   });
-});
+
+
+}); // End Document.Ready
