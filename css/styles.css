@@ -4,18 +4,20 @@
 
 footer {
   position: fixed;
+  min-width: 1024px;
+  width: auto;
+  width: 1024px;
   height: 10%;
-  width: 100%;
-  background-color: blue;
-  bottom: 63px;
+  bottom: 20px;
 }
+
 
 .col-sm-3 {
   background-color: red;
 }
 
 img#north {
-  margin-left: 79px;
+  margin-left: 67px;
 }
 
 img#west {
@@ -23,9 +25,9 @@ img#west {
 }
 
 img#east {
-  margin-left: 45px;
+  margin-left: 33px;
 }
 
 img#south {
-  margin-left: 79px;
+  margin-left: 67px;
 }
