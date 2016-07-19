@@ -40,6 +40,30 @@ var attributeGen = function() {
 
 // User Interface Logic
 
-// Initial player state. inputtedName will require jQuery, if testing in console pass a string.
-var items = [];
-var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
+
+$(document).ready(function(event) {
+  event.preventDefault();
+  // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
+  var items = [];
+  var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
+
+  $("#north").click(function() {
+    player.north();
+    console.log("north");
+  });
+
+  $("#east").click(function() {
+    player.east();
+    console.log("east");
+  });
+
+  $("#south").click(function() {
+    player.south();
+    console.log("south");
+  });
+
+  $("#west").click(function() {
+    player.west();
+    console.log("west");
+  });
+});
