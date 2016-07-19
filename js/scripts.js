@@ -15,42 +15,42 @@ function Adventurer(name, xCord, yCord, health, items, str, dex, wit) {
 }
 
 Adventurer.prototype.north = function() {
-  if (player.yCord > 4) {
+  if (this.yCord > 4) {
     this.health -= 1;
-    console.log(player);
+    console.log(this);
   } else {
     this.yCord += 1;
-    console.log(player);
+    console.log(this);
   }
 };
 
 Adventurer.prototype.south = function() {
-  if (player.yCord < 0) {
+  if (this.yCord < 0) {
     this.health -= 1;
-    console.log(player);
+    console.log(this);
   } else {
     this.yCord -= 1;
-    console.log(player);
+    console.log(this);
   }
 };
 
 Adventurer.prototype.east = function() {
-  if (player.xCord > 4) {
+  if (this.xCord > 4) {
     this.health -= 1;
-    console.log(player);
+    console.log(this);
   } else {
     this.xCord += 1;
-    console.log(player);
+    console.log(this);
   }
 };
 
 Adventurer.prototype.west = function() {
-  if (player.xCord < 0) {
+  if (this.xCord < 0) {
     this.health -= 1;
-    console.log(player);
+    console.log(this);
   } else {
     this.xCord -= 1;
-    console.log(player);
+    console.log(this);
   }
 };
 
@@ -66,14 +66,20 @@ var attributeGen = function() {
   return 1 + Math.floor(Math.random() * 4);
 }
 
-var items = [];
-var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
+// Description Start
+// xCord is an Adjective and yCord is a Verb
+// var desc = [ {
+//
+// }
+// ]
 
 
 // User Interface Logic
 
 
 $(document).ready(function() {
+  var items = [];
+  var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
 
   // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
 
