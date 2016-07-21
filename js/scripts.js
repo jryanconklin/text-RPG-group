@@ -100,59 +100,59 @@ Adventurer.prototype.spaceCheck = function() {
     console.log(descriptions[0]);
     // this.items.push("The Earth Stone");
   } else if (this.yCord === 1 && this.xCord === 0) {
-    console.log(descriptions[1]);
+    $("#description").html(descriptions[1]);
   } else if (this.yCord === 2 && this.xCord === 0) {
-    console.log(descriptions[2]);
+    $("#description").html(descriptions[2]);
   } else if (this.yCord === 3 && this.xCord === 0) {
-    console.log(descriptions[3]);
+    $("#description").html(descriptions[3]);
   } else if (this.yCord === 4 && this.xCord === 0) {
-    console.log(descriptions[4]);
+    $("#description").html(descriptions[4]);
     // this.items.push("The Water Stone");
   } else if (this.yCord === 0 && this.xCord === 1) {
-    console.log(descriptions[5]);
+    $("#description").html(descriptions[5]);
   } else if (this.yCord === 1 && this.xCord === 1) {
-    console.log(descriptions[6]);
+    $("#description").html(descriptions[6]);
   } else if (this.yCord === 2 && this.xCord === 1) {
-    console.log(descriptions[7]);
+    $("#description").html(descriptions[7]);
   } else if (this.yCord === 3 && this.xCord === 1) {
-    console.log(descriptions[8]);
+    $("#description").html(descriptions[8]);
   } else if (this.yCord === 4 && this.xCord === 1) {
-    console.log(descriptions[9]);
+    $("#description").html(descriptions[9]);
   } else if (this.yCord === 0 && this.xCord === 2) {
-    console.log(descriptions[10]);
+    $("#description").html(descriptions[10]);
   } else if (this.yCord === 1 && this.xCord === 2) {
-    console.log(descriptions[11]);
+    $("#description").html(descriptions[11]);
   } else if (this.yCord === 2 && this.xCord === 2) {
-    console.log(descriptions[12]);
+    $("#description").html(descriptions[12]);
     // Starting
   } else if (this.yCord === 3 && this.xCord === 2) {
-    console.log(descriptions[13]);
+    $("#description").html(descriptions[13]);
   } else if (this.yCord === 4 && this.xCord === 2) {
-    console.log(descriptions[14]);
+    $("#description").html(descriptions[14]);
   } else if (this.yCord === 0 && this.xCord === 3) {
-    console.log(descriptions[15]);
+    $("#description").html(descriptions[15]);
   } else if (this.yCord === 1 && this.xCord === 3) {
-    console.log(descriptions[16]);
+    $("#description").html(descriptions[16]);
   } else if (this.yCord === 2 && this.xCord === 3) {
-    console.log(descriptions[17]);
+    $("#description").html(descriptions[17]);
   } else if (this.yCord === 3 && this.xCord === 3) {
-    console.log(descriptions[18]);
+    $("#description").html(descriptions[18]);
   } else if (this.yCord === 4 && this.xCord === 3) {
-    console.log(descriptions[19]);
+    $("#description").html(descriptions[19]);
   } else if (this.yCord === 0 && this.xCord === 4) {
-    console.log(descriptions[20]);
+    $("#description").html(descriptions[20]);
     // this.items.push("The Sun Stone");
   } else if (this.yCord === 1 && this.xCord === 4) {
-    console.log(descriptions[21]);
+    $("#description").html(descriptions[21]);
   } else if (this.yCord === 2 && this.xCord === 4) {
-    console.log(descriptions[22]);
+    $("#description").html(descriptions[22]);
   } else if (this.yCord === 3 && this.xCord === 4) {
-    console.log(descriptions[23]);
+    $("#description").html(descriptions[23]);
   } else if (this.yCord === 4 && this.xCord === 4) {
-    console.log(descriptions[24]);
+    $("#description").html(descriptions[24]);
     // forestLoop();
   } else {
-    console.log("You're incredibly lost!")
+    $("#description").html("You're incredibly lost!");
   }
 }
 
