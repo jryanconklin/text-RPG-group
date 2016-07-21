@@ -11,6 +11,23 @@ footer {
   bottom: 20px;
 }
 
+.stats, .items {
+  float: right;
+  display: inline-block;
+  margin-right: 12%;
+}
+
+.stats-mid, .items-mid {
+  float: right;
+  display: inline-block;
+  margin-right: 12%;
+}
+
+#item1 {
+  float: right;
+  display: inline-block;
+  margin-right: -15px;
+}
 
 .col-sm-3 {
   background-color: red;
