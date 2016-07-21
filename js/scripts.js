@@ -3,11 +3,12 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, items, str, dex, wit) {
+function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
   this.name = name;
   this.xCord = xCord;
   this.yCord = yCord;
   this.health = health;
+  this.moves = moves;
   this.items = [];
   this.str = str; // if time
   this.dex = dex; // if time
@@ -17,9 +18,11 @@ function Adventurer(name, xCord, yCord, health, items, str, dex, wit) {
 Adventurer.prototype.north = function() {
   if (this.yCord > 4) {
     this.health -= 1;
+    this.moves += 1;
     console.log(this);
   } else {
     this.yCord += 1;
+    this.moves += 1;
     console.log(this);
   }
 };
@@ -27,9 +30,11 @@ Adventurer.prototype.north = function() {
 Adventurer.prototype.south = function() {
   if (this.yCord < 0) {
     this.health -= 1;
+    this.moves += 1;
     console.log(this);
   } else {
     this.yCord -= 1;
+    this.moves += 1;
     console.log(this);
   }
 };
@@ -37,9 +42,11 @@ Adventurer.prototype.south = function() {
 Adventurer.prototype.east = function() {
   if (this.xCord > 4) {
     this.health -= 1;
+    this.moves += 1;
     console.log(this);
   } else {
     this.xCord += 1;
+    this.moves += 1;
     console.log(this);
   }
 };
@@ -47,15 +54,17 @@ Adventurer.prototype.east = function() {
 Adventurer.prototype.west = function() {
   if (this.xCord < 0) {
     this.health -= 1;
+    this.moves += 1;
     console.log(this);
   } else {
     this.xCord -= 1;
+    this.moves += 1;
     console.log(this);
   }
 };
 
 Adventurer.prototype.death = function() {
-  if (this.health < 1) {
+  if (this.health < 1 || this.moves > 50) {
     alert("You Have Died of Dysentery")
   }
 }
@@ -97,7 +106,7 @@ var descriptions = [
 
 Adventurer.prototype.spaceCheck = function() {
   if (this.yCord === 0 && this.xCord === 0) {
-    console.log(descriptions[0]);
+    $("#description").html(descriptions[0]);
     // this.items.push("The Earth Stone");
   } else if (this.yCord === 1 && this.xCord === 0) {
     $("#description").html(descriptions[1]);
@@ -162,7 +171,7 @@ Adventurer.prototype.spaceCheck = function() {
 
 $(document).ready(function() {
   var items = [];
-  var player = new Adventurer("inputtedName", 0, 0, 10, items, attributeGen(), attributeGen(), attributeGen());
+  var player = new Adventurer("inputtedName", 0, 0, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
   // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
 
@@ -170,24 +179,28 @@ $(document).ready(function() {
     player.north();
     player.spaceCheck();
     player.death();
+    $("#health").html(player.health);
   });
 
   $("#east").click(function() {
     player.east();
     player.spaceCheck();
     player.death();
+    $("#health").html(player.health);
   });
 
   $("#south").click(function() {
     player.south();
     player.spaceCheck();
     player.death();
+    $("#health").html(player.health);
   });
 
   $("#west").click(function() {
     player.west();
     player.spaceCheck();
     player.death();
+    $("#health").html(player.health);
   });
 
 
