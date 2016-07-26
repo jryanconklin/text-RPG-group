@@ -87,7 +87,6 @@ Adventurer.prototype.itemCheck = function() {
 Adventurer.prototype.forestTrap = function() {
   if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
       var trapRoll = Math.floor(Math.random() * 7) + 1;
-      console.log(trapRoll);
 
       if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
       $("#east").trigger("click");
@@ -172,7 +171,7 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[11]);
   } else if (this.yCord === 2 && this.xCord === 2) {
     $("#description").html(descriptions[12]);
-    // Starting
+    this.winCheck();
   } else if (this.yCord === 3 && this.xCord === 2) {
     $("#description").html(descriptions[13]);
   } else if (this.yCord === 4 && this.xCord === 2) {
@@ -206,6 +205,12 @@ Adventurer.prototype.spaceCheck = function() {
   }
 }
 
+// Winning!
+Adventurer.prototype.winCheck = function() {
+  if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
+    $("#description").html("You've won!");
+  }
+}
 
 
 
