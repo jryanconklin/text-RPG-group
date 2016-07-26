@@ -63,11 +63,21 @@ Adventurer.prototype.west = function() {
   }
 };
 
+
+//Player Death
 Adventurer.prototype.death = function() {
   if (this.health < 1 || this.moves > 50) {
     alert("You Have Died of Dysentery")
   }
 }
+
+//Items
+Adventurer.prototype.itemCheck = function() {
+  if (this.yCord === 4 && this.xCord === 0) {
+    this.items.push("The Water Stone");
+  }
+}
+
 
 // Traps
 Adventurer.prototype.forestTrap = function() {
@@ -140,6 +150,7 @@ Adventurer.prototype.spaceCheck = function() {
   } else if (this.yCord === 4 && this.xCord === 0) {
     $("#description").html(descriptions[4]);
     // this.items.push("The Water Stone");
+    this.itemCheck();
   } else if (this.yCord === 0 && this.xCord === 1) {
     $("#description").html(descriptions[5]);
   } else if (this.yCord === 1 && this.xCord === 1) {
@@ -188,6 +199,8 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html("You're incredibly lost!");
   }
 }
+
+
 
 
 // User Interface Logic
