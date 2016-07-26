@@ -3,12 +3,12 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
+function Adventurer(name, xCord, yCord, health, days, items, str, dex, wit) {
   this.name = name;
   this.xCord = xCord;
   this.yCord = yCord;
   this.health = health;
-  this.moves = moves;
+  this.days = days;
   this.items = [];
   this.str = str; // if time
   this.dex = dex; // if time
@@ -18,11 +18,11 @@ function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
 Adventurer.prototype.north = function() {
   if (this.yCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -30,11 +30,11 @@ Adventurer.prototype.north = function() {
 Adventurer.prototype.south = function() {
   if (this.yCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -42,11 +42,11 @@ Adventurer.prototype.south = function() {
 Adventurer.prototype.east = function() {
   if (this.xCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -54,11 +54,11 @@ Adventurer.prototype.east = function() {
 Adventurer.prototype.west = function() {
   if (this.xCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -66,7 +66,7 @@ Adventurer.prototype.west = function() {
 
 //Player Death
 Adventurer.prototype.death = function() {
-  if (this.health < 1 || this.moves > 50) {
+  if (this.health < 1 || this.days > 30) {
     alert("You Have Died of Dysentery")
   }
 }
@@ -93,12 +93,12 @@ Adventurer.prototype.forestTrap = function() {
     } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
       $("#north").trigger("click");
     } else if (trapRoll <= 3) {
-      this.moves += 1;
+      this.days += 1;
       this.health -= 1;
       $("#west").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
     } else if (trapRoll > 3) {
-      this.moves += 2;
+      this.days += 2;
       this.health -= 2;
       $("#south").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
@@ -232,7 +232,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
-    $("#moves").html(player.moves);
+    $("#days").html(player.days);
   });
 
   $("#east").click(function() {
@@ -242,7 +242,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
-    $("#moves").html(player.moves);
+    $("#days").html(player.days);
   });
 
   $("#south").click(function() {
@@ -251,7 +251,7 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
-    $("#moves").html(player.moves);
+    $("#days").html(player.days);
   });
 
   $("#west").click(function() {
@@ -260,7 +260,7 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
-    $("#moves").html(player.moves);
+    $("#days").html(player.days);
   });
 
 
