@@ -219,7 +219,7 @@ Adventurer.prototype.winCheck = function() {
 
 $(document).ready(function() {
   var items = [];
-  var player = new Adventurer("inputtedName", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
+  var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
   // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
 
