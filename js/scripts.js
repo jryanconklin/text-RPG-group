@@ -114,7 +114,7 @@ var attributeGen = function() {
 var descriptions = [
   "0",
   "You're trecking through the forest and you see a poorly written, unintelligible sign on a rock that points south but also has a skull drawn. One would think that you wouldn't chance imminent death, but you're not exactly rich in choices, are you? To the north is the humid wetlands and to the east is a daunting mountain peak. To the west is a clearing of trees into a valley.",
-  "The air grows thin as you descend from the mountains into the ash gray bog. The water is still as death all around.",
+  "The foul stench chokes your lungs as you wander amidst the ash gray bog. The water is still as death all around.",
   "These moist swamplands are thick with the scent of decay.",
   "You find it as if it had called to you near the gray ghost of a dead tree. Buried deep in the muck and mud is a fist-sized blue gem with a serpentine iris. You have found the water stone.",
   "5",
