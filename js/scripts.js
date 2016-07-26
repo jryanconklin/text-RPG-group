@@ -3,12 +3,12 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
+function Adventurer(name, xCord, yCord, health, days, items, str, dex, wit) {
   this.name = name;
   this.xCord = xCord;
   this.yCord = yCord;
   this.health = health;
-  this.moves = moves;
+  this.days = days;
   this.items = [];
   this.str = str; // if time
   this.dex = dex; // if time
@@ -18,11 +18,11 @@ function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
 Adventurer.prototype.north = function() {
   if (this.yCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -30,11 +30,11 @@ Adventurer.prototype.north = function() {
 Adventurer.prototype.south = function() {
   if (this.yCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -42,11 +42,11 @@ Adventurer.prototype.south = function() {
 Adventurer.prototype.east = function() {
   if (this.xCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -54,11 +54,11 @@ Adventurer.prototype.east = function() {
 Adventurer.prototype.west = function() {
   if (this.xCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -66,7 +66,7 @@ Adventurer.prototype.west = function() {
 
 //Player Death
 Adventurer.prototype.death = function() {
-  if (this.health < 1 || this.moves > 50) {
+  if (this.health < 1 || this.days > 30) {
     alert("You Have Died of Dysentery")
   }
 }
@@ -75,10 +75,13 @@ Adventurer.prototype.death = function() {
 Adventurer.prototype.itemCheck = function() {
   if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
     this.items.push("The Water Stone");
+    $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
   } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
     this.items.push("The Earth Stone");
+    $("#items").append("<img src='img/redgem.png' class='gems'></img>");
   } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
-    this.items.push("The Sun Stone")
+    this.items.push("The Sun Stone");
+    $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
   }
 }
 
@@ -93,12 +96,12 @@ Adventurer.prototype.forestTrap = function() {
     } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
       $("#north").trigger("click");
     } else if (trapRoll <= 3) {
-      this.moves += 1;
+      this.days += 1;
       this.health -= 1;
       $("#west").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
     } else if (trapRoll > 3) {
-      this.moves += 2;
+      this.days += 2;
       this.health -= 2;
       $("#south").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
@@ -112,12 +115,12 @@ var attributeGen = function() {
 }
 
 var descriptions = [
-  "0",
+  "The soot from the fires fill your lungs once again. The fires have ravaged the terrain, making it fit for no animal, especially not one as frail as yourself. You have the sudden urge to flee. You are not immediately aware of your surroundings as you know you will soon perish if you do not find a habitable clearing",
   "You're trecking through the forest and you see a poorly written, unintelligible sign on a rock that points south but also has a skull drawn. One would think that you wouldn't chance imminent death, but you're not exactly rich in choices, are you? To the north is the humid wetlands and to the east is a daunting mountain peak. To the west is a clearing of trees into a valley.",
   "The foul stench chokes your lungs as you wander amidst the ash gray bog. The water is still as death all around.",
   "These moist swamplands are thick with the scent of decay.",
   "You find it as if it had called to you near the gray ghost of a dead tree. Buried deep in the muck and mud is a fist-sized blue gem with a serpentine iris. You have found the water stone.",
-  "5",
+  "Your eyes begin to water from the dry heat coming from the east but also have respite from the sun from the towering pine trees littering the mountains. You look to the north and see the gargantuan mountain peak. To the south you can see a narrow valley leading to what you believe is a river. To the west appears to be a recently burned forest fire with creatures burned to a crisp, scattered across the valleys. To the east you see a desert, hot and water-less.",
   "You have navigated atop the treacherous mountain peak. The air is light and you gasp for air from your tired lungs. Atop to mountain is a view that one could only believe with their own eyes; forests, mountains/hills, a vast desert and wetlands. A dark layer of fog obscures your view of beyond. As you lie down for the night it surprisingly begins to rain. It's surprising because your body feels frozen atop the mountain and it's not snow. Each direction immediately around you is mountains cascading down into either forests, wetlands, or deserts.",
   "As you step into the mountains you feel the humidity of the water surrounding you from half of your directions. As you look north the trees start turning into swamps before your view is obscured by fog. Looking west doesn't seem that different than the north. To the east is the ancient stone monolith that you know holds immense purpose. To the south you see the mountains peak, which would be quite a feat for someone such as yourself to navigate.",
   "Wet heat drifts off the bog, soaking your clothing through. Your sweat doesn’t even have the chance to evaporate.",
@@ -221,7 +224,9 @@ $(document).ready(function() {
   var items = [];
   var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
-  // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
+  $("#wit").html(player.wit);
+  $("#dexterity").html(player.dex);
+  $("#strength").html(player.str);
 
   $("#north").click(function() {
     player.north();
@@ -230,6 +235,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#east").click(function() {
@@ -239,6 +245,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#south").click(function() {
@@ -247,6 +254,7 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#west").click(function() {
@@ -255,7 +263,10 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
+
+
 
 
 }); // End Document.Ready

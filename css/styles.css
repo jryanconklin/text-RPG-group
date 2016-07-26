@@ -24,6 +24,10 @@ footer {
   margin-right: 30%;
 }
 
+.gems {
+  margin: 0 2.5px;
+}
+
 /*.stats-mid, .items-mid {
   float: right;
   display: inline-block;
