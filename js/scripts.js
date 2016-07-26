@@ -221,7 +221,9 @@ $(document).ready(function() {
   var items = [];
   var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
-  // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
+  $("#wit").html(player.wit);
+  $("#dexterity").html(player.dex);
+  $("#strength").html(player.str);
 
   $("#north").click(function() {
     player.north();
@@ -230,6 +232,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#moves").html(player.moves);
   });
 
   $("#east").click(function() {
@@ -239,6 +242,7 @@ $(document).ready(function() {
     player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#moves").html(player.moves);
   });
 
   $("#south").click(function() {
@@ -247,6 +251,7 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#moves").html(player.moves);
   });
 
   $("#west").click(function() {
@@ -255,7 +260,10 @@ $(document).ready(function() {
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#moves").html(player.moves);
   });
+
+
 
 
 }); // End Document.Ready
