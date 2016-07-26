@@ -73,8 +73,12 @@ Adventurer.prototype.death = function() {
 
 //Items
 Adventurer.prototype.itemCheck = function() {
-  if (this.yCord === 4 && this.xCord === 0) {
+  if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
     this.items.push("The Water Stone");
+  } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
+    this.items.push("The Earth Stone");
+  } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
+    this.items.push("The Sun Stone")
   }
 }
 
@@ -140,7 +144,8 @@ var descriptions = [
 Adventurer.prototype.spaceCheck = function() {
   if (this.yCord === 0 && this.xCord === 0) {
     $("#description").html(descriptions[0]);
-    // this.items.push("The Earth Stone");
+    // The Earth Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 0) {
     $("#description").html(descriptions[1]);
   } else if (this.yCord === 2 && this.xCord === 0) {
@@ -149,7 +154,7 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[3]);
   } else if (this.yCord === 4 && this.xCord === 0) {
     $("#description").html(descriptions[4]);
-    // this.items.push("The Water Stone");
+    // The Water Stone Location
     this.itemCheck();
   } else if (this.yCord === 0 && this.xCord === 1) {
     $("#description").html(descriptions[5]);
@@ -185,7 +190,8 @@ Adventurer.prototype.spaceCheck = function() {
     // Forest Trap
   } else if (this.yCord === 0 && this.xCord === 4) {
     $("#description").html(descriptions[20]);
-    // this.items.push("The Sun Stone");
+    // The Sun Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 4) {
     $("#description").html(descriptions[21]);
   } else if (this.yCord === 2 && this.xCord === 4) {
