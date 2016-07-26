@@ -67,9 +67,12 @@ Adventurer.prototype.west = function() {
 //Player Death
 Adventurer.prototype.death = function() {
   if (this.health < 1 || this.days > 30) {
-    alert("You Have Died of Dysentery")
+    $("footer").hide();
+    $("header").hide();
+    $(".container").hide();
+    $("#death").show();
   }
-}
+};
 
 //Items
 Adventurer.prototype.itemCheck = function() {
@@ -83,7 +86,7 @@ Adventurer.prototype.itemCheck = function() {
     this.items.push("The Sun Stone");
     $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
   }
-}
+};
 
 
 // Traps
@@ -107,12 +110,12 @@ Adventurer.prototype.forestTrap = function() {
       $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
     }
   }
-}
+};
 
 // Attribute Generator to Define Initial Player Attributes.
 var attributeGen = function() {
   return 1 + Math.floor(Math.random() * 4);
-}
+};
 
 var descriptions = [
   "The soot from the fires fill your lungs once again. The fires have ravaged the terrain, making it fit for no animal, especially not one as frail as yourself. You have the sudden urge to flee. You are not immediately aware of your surroundings as you know you will soon perish if you do not find a habitable clearing",
@@ -206,14 +209,14 @@ Adventurer.prototype.spaceCheck = function() {
   } else {
     $("#description").html("You're incredibly lost!");
   }
-}
+};
 
 // Winning!
 Adventurer.prototype.winCheck = function() {
   if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
-    $("#description").html("You've won!");
+    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the dark. You have won.</strong>");
   }
-}
+};
 
 
 
@@ -265,7 +268,6 @@ $(document).ready(function() {
     $("#health").html(player.health);
     $("#days").html(player.days);
   });
-
 
 
 
