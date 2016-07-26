@@ -188,7 +188,7 @@ Adventurer.prototype.spaceCheck = function() {
 // Winning!
 Adventurer.prototype.winCheck = function() {
   if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
-    console.log("Yay!");
+    $("#description").html("You've won!");
   }
 }
 
