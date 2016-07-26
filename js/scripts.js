@@ -72,7 +72,7 @@ Adventurer.prototype.death = function() {
 // Traps
 Adventurer.prototype.forestTrap = function() {
   if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
-      var trapRoll = 7; // Math.floor(Math.random() * 7) + 1;
+      var trapRoll = Math.floor(Math.random() * 7) + 1;
       console.log(trapRoll);
 
       if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
