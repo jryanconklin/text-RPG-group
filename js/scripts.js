@@ -69,6 +69,29 @@ Adventurer.prototype.death = function() {
   }
 }
 
+// Traps
+Adventurer.prototype.forestTrap = function() {
+  if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
+      var trapRoll = 7; // Math.floor(Math.random() * 7) + 1;
+      console.log(trapRoll);
+
+      if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
+      $("#east").trigger("click");
+    } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
+      $("#north").trigger("click");
+    } else if (trapRoll <= 3) {
+      this.moves += 1;
+      this.health -= 1;
+      $("#west").trigger("click");
+      $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
+    } else if (trapRoll > 3) {
+      this.moves += 2;
+      this.health -= 2;
+      $("#south").trigger("click");
+      $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
+    }
+  }
+}
 
 // Attribute Generator to Define Initial Player Attributes.
 var attributeGen = function() {
@@ -148,6 +171,7 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[18]);
   } else if (this.yCord === 4 && this.xCord === 3) {
     $("#description").html(descriptions[19]);
+    // Forest Trap
   } else if (this.yCord === 0 && this.xCord === 4) {
     $("#description").html(descriptions[20]);
     // this.items.push("The Sun Stone");
@@ -157,9 +181,9 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[22]);
   } else if (this.yCord === 3 && this.xCord === 4) {
     $("#description").html(descriptions[23]);
+    // Forest Trap
   } else if (this.yCord === 4 && this.xCord === 4) {
     $("#description").html(descriptions[24]);
-    // forestLoop();
   } else {
     $("#description").html("You're incredibly lost!");
   }
@@ -178,6 +202,7 @@ $(document).ready(function() {
   $("#north").click(function() {
     player.north();
     player.spaceCheck();
+    player.forestTrap();
     player.death();
     $("#health").html(player.health);
   });
@@ -185,6 +210,7 @@ $(document).ready(function() {
   $("#east").click(function() {
     player.east();
     player.spaceCheck();
+    player.forestTrap();
     player.death();
     $("#health").html(player.health);
   });
