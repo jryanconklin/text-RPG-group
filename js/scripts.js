@@ -225,6 +225,7 @@ $(document).ready(function() {
 
   $("#north").click(function() {
     player.north();
+    $("#notices").html("");
     player.spaceCheck();
     player.forestTrap();
     player.death();
@@ -233,6 +234,7 @@ $(document).ready(function() {
 
   $("#east").click(function() {
     player.east();
+    $("#notices").html("");
     player.spaceCheck();
     player.forestTrap();
     player.death();
@@ -241,6 +243,7 @@ $(document).ready(function() {
 
   $("#south").click(function() {
     player.south();
+    $("#notices").html("");
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
@@ -248,6 +251,7 @@ $(document).ready(function() {
 
   $("#west").click(function() {
     player.west();
+    $("#notices").html("");
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
