@@ -112,12 +112,12 @@ var attributeGen = function() {
 }
 
 var descriptions = [
-  "0",
+  "The soot from the fires fill your lungs once again. The fires have ravaged the terrain, making it fit for no animal, especially not one as frail as yourself. You have the sudden urge to flee. You are not immediately aware of your surroundings as you know you will soon perish if you do not find a habitable clearing",
   "You're trecking through the forest and you see a poorly written, unintelligible sign on a rock that points south but also has a skull drawn. One would think that you wouldn't chance imminent death, but you're not exactly rich in choices, are you? To the north is the humid wetlands and to the east is a daunting mountain peak. To the west is a clearing of trees into a valley.",
   "The foul stench chokes your lungs as you wander amidst the ash gray bog. The water is still as death all around.",
   "These moist swamplands are thick with the scent of decay.",
   "You find it as if it had called to you near the gray ghost of a dead tree. Buried deep in the muck and mud is a fist-sized blue gem with a serpentine iris. You have found the water stone.",
-  "5",
+  "Your eyes begin to water from the dry heat coming from the east but also have respite from the sun from the towering pine trees littering the mountains. You look to the north and see the gargantuan mountain peak. To the south you can see a narrow valley leading to what you believe is a river. To the west appears to be a recently burned forest fire with creatures burned to a crisp, scattered across the valleys. To the east you see a desert, hot and water-less.",
   "You have navigated atop the treacherous mountain peak. The air is light and you gasp for air from your tired lungs. Atop to mountain is a view that one could only believe with their own eyes; forests, mountains/hills, a vast desert and wetlands. A dark layer of fog obscures your view of beyond. As you lie down for the night it surprisingly begins to rain. It's surprising because your body feels frozen atop the mountain and it's not snow. Each direction immediately around you is mountains cascading down into either forests, wetlands, or deserts.",
   "As you step into the mountains you feel the humidity of the water surrounding you from half of your directions. As you look north the trees start turning into swamps before your view is obscured by fog. Looking west doesn't seem that different than the north. To the east is the ancient stone monolith that you know holds immense purpose. To the south you see the mountains peak, which would be quite a feat for someone such as yourself to navigate.",
   "Wet heat drifts off the bog, soaking your clothing through. Your sweat doesn’t even have the chance to evaporate.",
