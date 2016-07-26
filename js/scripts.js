@@ -129,7 +129,6 @@ var descriptions = [
 Adventurer.prototype.spaceCheck = function() {
   if (this.yCord === 0 && this.xCord === 0) {
     $("#description").html(descriptions[0]);
-    // this.items.push("The Earth Stone");
   } else if (this.yCord === 1 && this.xCord === 0) {
     $("#description").html(descriptions[1]);
   } else if (this.yCord === 2 && this.xCord === 0) {
@@ -138,7 +137,6 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[3]);
   } else if (this.yCord === 4 && this.xCord === 0) {
     $("#description").html(descriptions[4]);
-    // this.items.push("The Water Stone");
   } else if (this.yCord === 0 && this.xCord === 1) {
     $("#description").html(descriptions[5]);
   } else if (this.yCord === 1 && this.xCord === 1) {
@@ -155,7 +153,7 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[11]);
   } else if (this.yCord === 2 && this.xCord === 2) {
     $("#description").html(descriptions[12]);
-    // Starting
+    this.winCheck();
   } else if (this.yCord === 3 && this.xCord === 2) {
     $("#description").html(descriptions[13]);
   } else if (this.yCord === 4 && this.xCord === 2) {
@@ -173,7 +171,6 @@ Adventurer.prototype.spaceCheck = function() {
     // Forest Trap
   } else if (this.yCord === 0 && this.xCord === 4) {
     $("#description").html(descriptions[20]);
-    // this.items.push("The Sun Stone");
   } else if (this.yCord === 1 && this.xCord === 4) {
     $("#description").html(descriptions[21]);
   } else if (this.yCord === 2 && this.xCord === 4) {
@@ -188,6 +185,12 @@ Adventurer.prototype.spaceCheck = function() {
   }
 }
 
+// Winning!
+Adventurer.prototype.winCheck = function() {
+  if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
+    console.log("Yay!");
+  }
+}
 
 // User Interface Logic
 
