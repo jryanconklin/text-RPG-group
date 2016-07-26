@@ -75,10 +75,13 @@ Adventurer.prototype.death = function() {
 Adventurer.prototype.itemCheck = function() {
   if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
     this.items.push("The Water Stone");
+    $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
   } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
     this.items.push("The Earth Stone");
+    $("#items").append("<img src='img/redgem.png' class='gems'></img>");
   } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
-    this.items.push("The Sun Stone")
+    this.items.push("The Sun Stone");
+    $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
   }
 }
 
