@@ -72,29 +72,24 @@ Adventurer.prototype.death = function() {
 // Traps
 Adventurer.prototype.forestTrap = function() {
   if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
-      var trapRoll = Math.floor(Math.random() * 7) + 1;
+      var trapRoll = 7; // Math.floor(Math.random() * 7) + 1;
       console.log(trapRoll);
 
-      if (trapRoll === 7) {
+      if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
       $("#east").trigger("click");
-      console.log(this)
+    } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
+      $("#north").trigger("click");
     } else if (trapRoll <= 3) {
       this.moves += 1;
       this.health -= 1;
       $("#west").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
-      console.log(this);
     } else if (trapRoll > 3) {
       this.moves += 2;
       this.health -= 2;
       $("#south").trigger("click");
       $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
-      console.log(this)
     }
-
-    // if (this.yCord === 4 && this.xCord === 3) {
-    //
-    // }
   }
 }
 
