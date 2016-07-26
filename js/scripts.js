@@ -95,11 +95,11 @@ var descriptions = [
   "16",
   "17",
   "Trees. Trees, everywhere! You conclude that you are in a forest. Good for you. The sun is blocked by the trees making everything look dark and gloomy. You can’t see much of anything through the dense forest in front of you. You start to wonder if you should go on. You’re smart, you figured out that you were in a forest. What do you do? All signs point to, No.",
-  "19", //Space 19 is a trap that will place them somewhere else and will never be seen
+  "Leaving the oasis seemed like great a way to get terribly lost. Then you notice the faeries, cough, fireflies have lit paths through the forest to the south and west for you!", //This space is trapped.
   "20",
   "21",
   "You step from the rocky terrain onto the soft forest floor. You jump twice just to feel the ground flex underneath your feet. Seriously, it’s so soft you could sleep on it. You hear birds and other relaxing sounds all around you. You start to think you could stay here forever with Pooh and his friends. That’s not good. You have to move on. Do you really go farther into a forest that is clearly spellbinding you?",
-  "23", //Space 23 is a trap that will place them somewhere else and will never be seen
+  "Leaving the oasis seemed like great a way to get terribly lost. Then you notice the faeries, cough, fireflies have lit paths through the forest to the south and west for you!", //This space is trapped.
   "You step out of the woods into an oasis! You must be one of the luckiest people ever. Do you realize how slim your chances were of finding this place? You see beautiful flowers everywhere. Are those, are those faeries?! No stupid, they are fireflies. Get your head back in the game. You see a little pond and drink from it. You feel your health and energy improve. That’s good, because finding your way out of here isn’t going to be easy."
 ];
 
