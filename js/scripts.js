@@ -63,11 +63,25 @@ Adventurer.prototype.west = function() {
   }
 };
 
+
+//Player Death
 Adventurer.prototype.death = function() {
   if (this.health < 1 || this.moves > 50) {
     alert("You Have Died of Dysentery")
   }
 }
+
+//Items
+Adventurer.prototype.itemCheck = function() {
+  if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
+    this.items.push("The Water Stone");
+  } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
+    this.items.push("The Earth Stone");
+  } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
+    this.items.push("The Sun Stone")
+  }
+}
+
 
 // Traps
 Adventurer.prototype.forestTrap = function() {
@@ -129,6 +143,8 @@ var descriptions = [
 Adventurer.prototype.spaceCheck = function() {
   if (this.yCord === 0 && this.xCord === 0) {
     $("#description").html(descriptions[0]);
+    // The Earth Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 0) {
     $("#description").html(descriptions[1]);
   } else if (this.yCord === 2 && this.xCord === 0) {
@@ -137,6 +153,8 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[3]);
   } else if (this.yCord === 4 && this.xCord === 0) {
     $("#description").html(descriptions[4]);
+    // The Water Stone Location
+    this.itemCheck();
   } else if (this.yCord === 0 && this.xCord === 1) {
     $("#description").html(descriptions[5]);
   } else if (this.yCord === 1 && this.xCord === 1) {
@@ -171,6 +189,8 @@ Adventurer.prototype.spaceCheck = function() {
     // Forest Trap
   } else if (this.yCord === 0 && this.xCord === 4) {
     $("#description").html(descriptions[20]);
+    // The Sun Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 4) {
     $("#description").html(descriptions[21]);
   } else if (this.yCord === 2 && this.xCord === 4) {
@@ -192,12 +212,14 @@ Adventurer.prototype.winCheck = function() {
   }
 }
 
+
+
 // User Interface Logic
 
 
 $(document).ready(function() {
   var items = [];
-  var player = new Adventurer("inputtedName", 0, 0, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
+  var player = new Adventurer("inputtedName", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
   // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
 
