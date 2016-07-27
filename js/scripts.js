@@ -206,6 +206,12 @@ Adventurer.prototype.spaceCheck = function() {
     // Forest Trap
   } else if (this.yCord === 4 && this.xCord === 4) {
     $("#description").html(descriptions[24]);
+    this.health += 5;
+    this.days -= 5;
+  } else if (this.yCord === 5 && this.xCord === 3) {
+    $("#west").trigger("click");
+  } else if (this.yCord === 3 && this.xCord === 5) {
+    $("#south").trigger("click");
   } else {
     $("#description").html("You're incredibly lost!");
   }
