@@ -17,7 +17,10 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-
+/*
+#dex, #str, #wit, #health, #days, #items {
+  margin-top: 10px
+}*/
 
 footer {
   position: fixed;
@@ -26,6 +29,8 @@ footer {
   width: 1024px;
   height: 106px;
   bottom: 20px;
+  background-color: tan;
+  padding-bottom: 25px;
 }
 
 .stats, .items {
@@ -56,6 +61,7 @@ footer {
   display: inline-block;
   margin-right: -15px;
 }*/
+
 
 .col-sm-3 {
   background-color: #ac9371;
