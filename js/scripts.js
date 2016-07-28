@@ -3,13 +3,15 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, days, items, str, dex, wit) {
+function Adventurer(name, xCord, yCord, health, days, item1, item2, item3, str, dex, wit) {
   this.name = name;
   this.xCord = xCord;
   this.yCord = yCord;
   this.health = health;
   this.days = days;
-  this.items = [];
+  this.item1 = item1;
+  this.item2 = item2;
+  this.item3 = item3;
   this.str = str; // if time
   this.dex = dex; // if time
   this.wit = wit; // if time
@@ -76,14 +78,14 @@ Adventurer.prototype.death = function() {
 
 //Items
 Adventurer.prototype.itemCheck = function() {
-  if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
-    this.items.push("The Water Stone");
+  if (this.yCord === 4 && this.xCord === 0 && this.item1 === false) {
+    this.item1 = true;
     $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
-    this.items.push("The Earth Stone");
+  } else if (this.yCord === 0 && this.xCord === 0 && this.item2 === false) {
+    this.item2 = true;
     $("#items").append("<img src='img/redgem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
-    this.items.push("The Sun Stone");
+  } else if (this.yCord === 0 && this.xCord === 4 && this.item3 === false) {
+    this.item3 = true;
     $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
   }
 };
@@ -219,8 +221,8 @@ Adventurer.prototype.spaceCheck = function() {
 
 // Winning!
 Adventurer.prototype.winCheck = function() {
-  if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
-    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the darkness. You have won.</strong>");
+  if (this.yCord === 2 && this.xCord === 2 && this.item1 === true && this.item2 === true && this.item3 === true) {
+    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The colors begin to merge as you go blind, because the gems are slowing returning to their homes. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the darkness. You have won.</strong>");
   }
 };
 
@@ -231,7 +233,7 @@ Adventurer.prototype.winCheck = function() {
 
 $(document).ready(function() {
   var items = [];
-  var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
+  var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, false, false, false, attributeGen(), attributeGen(), attributeGen());
 
   $("#wit").html(player.wit);
   $("#dexterity").html(player.dex);
