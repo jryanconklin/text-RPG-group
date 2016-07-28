@@ -3,12 +3,12 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
+function Adventurer(name, xCord, yCord, health, days, items, str, dex, wit) {
   this.name = name;
   this.xCord = xCord;
   this.yCord = yCord;
   this.health = health;
-  this.moves = moves;
+  this.days = days;
   this.items = [];
   this.str = str; // if time
   this.dex = dex; // if time
@@ -18,11 +18,11 @@ function Adventurer(name, xCord, yCord, health, moves, items, str, dex, wit) {
 Adventurer.prototype.north = function() {
   if (this.yCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -30,11 +30,11 @@ Adventurer.prototype.north = function() {
 Adventurer.prototype.south = function() {
   if (this.yCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.yCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -42,11 +42,11 @@ Adventurer.prototype.south = function() {
 Adventurer.prototype.east = function() {
   if (this.xCord > 4) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord += 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
@@ -54,31 +54,72 @@ Adventurer.prototype.east = function() {
 Adventurer.prototype.west = function() {
   if (this.xCord < 0) {
     this.health -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   } else {
     this.xCord -= 1;
-    this.moves += 1;
+    this.days += 1;
     console.log(this);
   }
 };
 
-Adventurer.prototype.death = function() {
-  if (this.health < 1 || this.moves > 50) {
-    alert("You Have Died of Dysentery")
-  }
-}
 
+//Player Death
+Adventurer.prototype.death = function() {
+  if (this.health < 1 || this.days > 30) {
+    $("footer").hide();
+    $("header").hide();
+    $(".container").hide();
+    $("#death").show();
+  }
+};
+
+//Items
+Adventurer.prototype.itemCheck = function() {
+  if (this.yCord === 4 && this.xCord === 0 && this.items.indexOf("The Water Stone") === -1) {
+    this.items.push("The Water Stone");
+    $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
+  } else if (this.yCord === 0 && this.xCord === 0 && this.items.indexOf("The Earth Stone") === -1) {
+    this.items.push("The Earth Stone");
+    $("#items").append("<img src='img/redgem.png' class='gems'></img>");
+  } else if (this.yCord === 0 && this.xCord === 4 && this.items.indexOf("The Sun Stone") === -1) {
+    this.items.push("The Sun Stone");
+    $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
+  }
+};
+
+
+// Traps
+Adventurer.prototype.forestTrap = function() {
+  if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
+      var trapRoll = Math.floor(Math.random() * 7) + 1;
+
+      if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
+      $("#east").trigger("click");
+    } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
+      $("#north").trigger("click");
+    } else if (trapRoll <= 3) {
+      this.days += 1;
+      this.health -= 1;
+      $("#west").trigger("click");
+      $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
+    } else if (trapRoll > 3) {
+      this.days += 2;
+      this.health -= 2;
+      $("#south").trigger("click");
+      $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
+    }
+  }
+};
 
 // Attribute Generator to Define Initial Player Attributes.
 var attributeGen = function() {
   return 1 + Math.floor(Math.random() * 4);
-}
+};
 
 var descriptions = [
-  var descriptions = [
   "The soot from the fires fill your lungs once again. The fires have ravaged the terrain, making it fit for no animal, especially not one as frail as yourself. You have the sudden urge to flee. You are not immediately aware of your surroundings as you know you will soon perish if you do not find a habitable clearing",
-  "You're trecking through the forest and you see a poorly written, unintelligible sign on a rock that points south but also has a skull drawn. One would think that you wouldn't chance imminent death, but you're not exactly rich in choices, are you? To the north is the humid wetlands and to the east is a daunting mountain peak. To the west is a clearing of trees into a valley.",
+  "You're trekking through the forest and you see a poorly written, unintelligible sign on a rock that points south but also has a skull drawn. One would think that you wouldn't chance imminent death, but you're not exactly rich in choices, are you? To the north is the humid wetlands and to the east is a daunting mountain peak. To the west is a clearing of trees into a valley.",
   "The foul stench chokes your lungs as you wander amidst the ash gray bog. The water is still as death all around.",
   "These moist swamplands are thick with the scent of decay.",
   "You find it as if it had called to you near the gray ghost of a dead tree. Buried deep in the muck and mud is a fist-sized blue gem with a serpentine iris. You have found the water stone.",
@@ -109,7 +150,8 @@ var descriptions = [
 Adventurer.prototype.spaceCheck = function() {
   if (this.yCord === 0 && this.xCord === 0) {
     $("#description").html(descriptions[0]);
-    // this.items.push("The Earth Stone");
+    // The Earth Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 0) {
     $("#description").html(descriptions[1]);
   } else if (this.yCord === 2 && this.xCord === 0) {
@@ -118,7 +160,8 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[3]);
   } else if (this.yCord === 4 && this.xCord === 0) {
     $("#description").html(descriptions[4]);
-    // this.items.push("The Water Stone");
+    // The Water Stone Location
+    this.itemCheck();
   } else if (this.yCord === 0 && this.xCord === 1) {
     $("#description").html(descriptions[5]);
   } else if (this.yCord === 1 && this.xCord === 1) {
@@ -135,7 +178,7 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[11]);
   } else if (this.yCord === 2 && this.xCord === 2) {
     $("#description").html(descriptions[12]);
-    // Starting
+    this.winCheck();
   } else if (this.yCord === 3 && this.xCord === 2) {
     $("#description").html(descriptions[13]);
   } else if (this.yCord === 4 && this.xCord === 2) {
@@ -150,22 +193,38 @@ Adventurer.prototype.spaceCheck = function() {
     $("#description").html(descriptions[18]);
   } else if (this.yCord === 4 && this.xCord === 3) {
     $("#description").html(descriptions[19]);
+    // Forest Trap
   } else if (this.yCord === 0 && this.xCord === 4) {
     $("#description").html(descriptions[20]);
-    // this.items.push("The Sun Stone");
+    // The Sun Stone
+    this.itemCheck();
   } else if (this.yCord === 1 && this.xCord === 4) {
     $("#description").html(descriptions[21]);
   } else if (this.yCord === 2 && this.xCord === 4) {
     $("#description").html(descriptions[22]);
   } else if (this.yCord === 3 && this.xCord === 4) {
     $("#description").html(descriptions[23]);
+    // Forest Trap
   } else if (this.yCord === 4 && this.xCord === 4) {
     $("#description").html(descriptions[24]);
-    // forestLoop();
+    this.health += 5;
+    this.days -= 5;
+  } else if (this.yCord === 5 && this.xCord === 3) {
+    $("#west").trigger("click");
+  } else if (this.yCord === 3 && this.xCord === 5) {
+    $("#south").trigger("click");
   } else {
     $("#description").html("You're incredibly lost!");
   }
-}
+};
+
+// Winning!
+Adventurer.prototype.winCheck = function() {
+  if (this.yCord === 2 && this.xCord === 2 && this.items.indexOf("The Water Stone", "The Earth Stone", "The Sun Stone") !== -1) {
+    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the darkness. You have won.</strong>");
+  }
+};
+
 
 
 // User Interface Logic
@@ -173,37 +232,50 @@ Adventurer.prototype.spaceCheck = function() {
 
 $(document).ready(function() {
   var items = [];
-  var player = new Adventurer("inputtedName", 0, 0, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
+  var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, items, attributeGen(), attributeGen(), attributeGen());
 
-  // Initial player state. inputtedName will require jQuery, if testing in console pass a string.
+  $("#wit").html(player.wit);
+  $("#dexterity").html(player.dex);
+  $("#strength").html(player.str);
 
   $("#north").click(function() {
     player.north();
+    $("#notices").html("");
     player.spaceCheck();
+    player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#east").click(function() {
     player.east();
+    $("#notices").html("");
     player.spaceCheck();
+    player.forestTrap();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#south").click(function() {
     player.south();
+    $("#notices").html("");
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
 
   $("#west").click(function() {
     player.west();
+    $("#notices").html("");
     player.spaceCheck();
     player.death();
     $("#health").html(player.health);
+    $("#days").html(player.days);
   });
+
 
 
 }); // End Document.Ready
