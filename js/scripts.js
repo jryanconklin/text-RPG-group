@@ -21,11 +21,9 @@ Adventurer.prototype.north = function() {
   if (this.yCord > 4) {
     this.health -= 1;
     this.days += 1;
-    console.log(this);
   } else {
     this.yCord += 1;
     this.days += 1;
-    console.log(this);
   }
 };
 
@@ -33,11 +31,9 @@ Adventurer.prototype.south = function() {
   if (this.yCord < 0) {
     this.health -= 1;
     this.days += 1;
-    console.log(this);
   } else {
     this.yCord -= 1;
     this.days += 1;
-    console.log(this);
   }
 };
 
@@ -45,11 +41,9 @@ Adventurer.prototype.east = function() {
   if (this.xCord > 4) {
     this.health -= 1;
     this.days += 1;
-    console.log(this);
   } else {
     this.xCord += 1;
     this.days += 1;
-    console.log(this);
   }
 };
 
@@ -57,11 +51,9 @@ Adventurer.prototype.west = function() {
   if (this.xCord < 0) {
     this.health -= 1;
     this.days += 1;
-    console.log(this);
   } else {
     this.xCord -= 1;
     this.days += 1;
-    console.log(this);
   }
 };
 
