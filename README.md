@@ -1,8 +1,8 @@
 ## "The Idol of Doom"
 An Epicodus group project.
 
-<!-- ## Features
-The user starts out in a looking at an ancient stone monolith. The user is presented with four direction arrows to navigate the game area. -->
+## Features
+A game where user finds 3 gems to win the game!
 
 ## Technologies
 HTML, JavaScript, JQuery, CSS, and Twitter BootStrap.
@@ -25,7 +25,7 @@ At this point the project is a work in progress. The game itself has a minimum v
 
 
 ## Authors
-Stephen Emery, J. Ryan Conklin, Matt Botz and Scott Scholz.
+Stephen Emery, J. Ryan Conklin, Matt Botz, and Scott Scholz.
 
 ##License
 This work is listed under the MIT License.

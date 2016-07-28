@@ -222,7 +222,7 @@ Adventurer.prototype.spaceCheck = function() {
 // Winning!
 Adventurer.prototype.winCheck = function() {
   if (this.yCord === 2 && this.xCord === 2 && this.item1 === true && this.item2 === true && this.item3 === true) {
-    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the darkness. You have won.</strong>");
+    $("#description").html("<strong>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The colors begin to merge as you go blind, because the gems are slowing returning to their homes. The thing now inside your body only smiles, before turning its back to you and leaving you alone in the darkness. You have won.</strong>");
   }
 };
 
