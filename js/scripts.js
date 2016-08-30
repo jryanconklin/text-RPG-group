@@ -1,6 +1,15 @@
 // Business Logic
 
-// Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
+// Problem: Design a method for moving a player object through a 2D space, serving text to page based on:
+// player location, player health and hazard checking.
+
+// Global variables that define the bounds of the grid. Touching any of these constraints hurts and sends a
+// "you are lost" message.
+// A much better setup would be to have a "Level" class where these could be defined on a per-level basis.
+var max_x = 5;
+var max_y = 5;
+var min_x = -1;
+var min_y = -1;
 
 // Adventurer Constructor, defines the player variable.
 function Adventurer(name, xCoord, yCoord, health, days, item1, item2, item3, str, dex, wit) {
@@ -23,46 +32,64 @@ function Adventurer(name, xCoord, yCoord, health, days, item1, item2, item3, str
   }; // if time
 }
 
-Adventurer.prototype.north = function() {
-  if (this.coords.y > 4) {
-    this.health -= 1;
+Adventurer.prototype.move = function(direction) {
+  var moved = 0; // Track how far we move why not.
+  var new_coords = { // We will check this value against offMap.
+    x: this.coords.x,
+    y: this.coords.y
+  };
+  var valid_directions = {
+    north: {
+      y: 1
+    },
+    south: {
+      y: -1
+    },
+    east: {
+      x: 1
+    },
+    west: {
+      x: -1
+    }
+  };
+
+  // First see if we were even sent a valid direction.
+  if (valid_directions[direction]) {
+    // We did, so add a day, then, if we're on the map, try to move.
     this.days += 1;
-  } else {
-    this.coords.y += 1;
-    this.days += 1;
+    for (var coord in valid_directions[direction]) {
+      // Add any coordinates in a specific direction to the Player's coordinates.
+      new_coords[coord] += valid_directions[direction][coord];
+      moved += valid_directions[direction][coord];
+    }
+    if (!this.offmap(new_coords)) {
+      this.coords = new_coords;
+    }
+    else {
+      $("#notices").html("Offmap");
+    }
   }
+  else {
+    $("#notices").html("You tried to go an invalid direction!");
+  }
+
+  return moved;
 };
 
-Adventurer.prototype.south = function() {
-  if (this.coords.y < 0) {
+// Check to see if we've strayed off of the grid, and, if so, reduce health.
+Adventurer.prototype.offmap = function(new_coords) {
+  $("#notices").html("Bloop health.");
+  var offMap = false;
+  if (new_coords.y > max_y
+    || new_coords.y < min_y
+    || new_coords.x > max_x
+    || new_coords.x < min_x) {
+    $("#notices").html("Reducing health.");
     this.health -= 1;
-    this.days += 1;
-  } else {
-    this.coords.y -= 1;
-    this.days += 1;
+    offMap = true;
   }
+  return offMap;
 };
-
-Adventurer.prototype.east = function() {
-  if (this.coords.x > 4) {
-    this.health -= 1;
-    this.days += 1;
-  } else {
-    this.coords.x += 1;
-    this.days += 1;
-  }
-};
-
-Adventurer.prototype.west = function() {
-  if (this.coords.x < 0) {
-    this.health -= 1;
-    this.days += 1;
-  } else {
-    this.coords.x -= 1;
-    this.days += 1;
-  }
-};
-
 
 //Player Death
 Adventurer.prototype.death = function() {
@@ -221,6 +248,16 @@ Adventurer.prototype.spaceCheck = function() {
   }
 };
 
+// Do various checks and updates after grid location update.
+Adventurer.prototype.postMove = function() {
+  $("#notices").html("");
+  this.spaceCheck();
+  $("#health").html(this.health);
+  $("#days").html(this.days);
+  $("#coordX").html(this.coords.x);
+  $("#coordY").html(this.coords.y);
+};
+
 // Winning!
 Adventurer.prototype.winCheck = function() {
   if (this.coords.y === 2 && this.coords.x === 2 && this.inventory.item1 === true && this.inventory.item2 === true && this.inventory.item3 === true) {
@@ -243,18 +280,10 @@ $(document).ready(function() {
 
   $(".direction").click(function() {
     var direction = $(this).attr('id');
-    player[direction]();
+    player.move(direction); // This returns an "amount moved" if we want to do extra with that.
     player.postMove();
   });
 
 
 
 }); // End Document.Ready
-
-// Do various checks and updates after grid location update.
-Adventurer.prototype.postMove = function() {
-  $("#notices").html("");
-  this.spaceCheck();
-  $("#health").html(this.health);
-  $("#days").html(this.days);
-};
