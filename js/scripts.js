@@ -65,6 +65,9 @@ Adventurer.prototype.move = function(direction) {
     if (!this.offmap(new_coords)) {
       this.coords = new_coords;
     }
+    else {
+      this.health -= 1;
+    }
   }
   else {
     $("#notices").html("You tried to go an invalid direction!");
@@ -80,7 +83,6 @@ Adventurer.prototype.offmap = function(new_coords) {
     || new_coords.y < min_y
     || new_coords.x > max_x
     || new_coords.x < min_x) {
-    this.health -= 1;
     offMap = true;
   }
   return offMap;
@@ -167,79 +169,33 @@ var descriptions = [
   "You step out of the woods into a circular clearing! You must be one of the luckiest people ever. Do you realize how slim your chances were of finding this place? You see beautiful flowers everywhere. Are those, are those faeries?! No stupid, they are fireflies. Get your head back in the game. You see a lot of honeysuckles and drink from them. You feel your health and energy improve. That's good, because finding your way out of here isn't going to be easy."
 ];
 
-
-
 Adventurer.prototype.spaceCheck = function() {
-  if (this.coords.y === 0 && this.coords.x === 0) {
-    $("#description").html(descriptions[0]);
-    // The Earth Stone
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the earth stone!</strong>");
-  } else if (this.coords.y === 1 && this.coords.x === 0) {
-    $("#description").html(descriptions[1]);
-  } else if (this.coords.y === 2 && this.coords.x === 0) {
-    $("#description").html(descriptions[2]);
-  } else if (this.coords.y === 3 && this.coords.x === 0) {
-    $("#description").html(descriptions[3]);
-  } else if (this.coords.y === 4 && this.coords.x === 0) {
-    $("#description").html(descriptions[4]);
-    // The Water Stone Location
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the water stone!</strong>");
-  } else if (this.coords.y === 0 && this.coords.x === 1) {
-    $("#description").html(descriptions[5]);
-  } else if (this.coords.y === 1 && this.coords.x === 1) {
-    $("#description").html(descriptions[6]);
-  } else if (this.coords.y === 2 && this.coords.x === 1) {
-    $("#description").html(descriptions[7]);
-  } else if (this.coords.y === 3 && this.coords.x === 1) {
-    $("#description").html(descriptions[8]);
-  } else if (this.coords.y === 4 && this.coords.x === 1) {
-    $("#description").html(descriptions[9]);
-  } else if (this.coords.y === 0 && this.coords.x === 2) {
-    $("#description").html(descriptions[10]);
-  } else if (this.coords.y === 1 && this.coords.x === 2) {
-    $("#description").html(descriptions[11]);
-  } else if (this.coords.y === 2 && this.coords.x === 2) {
-    $("#description").html(descriptions[12]);
-    this.winCheck();
-  } else if (this.coords.y === 3 && this.coords.x === 2) {
-    $("#description").html(descriptions[13]);
-  } else if (this.coords.y === 4 && this.coords.x === 2) {
-    $("#description").html(descriptions[14]);
-  } else if (this.coords.y === 0 && this.coords.x === 3) {
-    $("#description").html(descriptions[15]);
-  } else if (this.coords.y === 1 && this.coords.x === 3) {
-    $("#description").html(descriptions[16]);
-  } else if (this.coords.y === 2 && this.coords.x === 3) {
-    $("#description").html(descriptions[17]);
-  } else if (this.coords.y === 3 && this.coords.x === 3) {
-    $("#description").html(descriptions[18]);
-  } else if (this.coords.y === 4 && this.coords.x === 3) {
-    $("#description").html(descriptions[19]);
-    // Forest Trap
-  } else if (this.coords.y === 0 && this.coords.x === 4) {
-    $("#description").html(descriptions[20]);
-    // The Sun Stone
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the sun stone!</strong>");
-  } else if (this.coords.y === 1 && this.coords.x === 4) {
-    $("#description").html(descriptions[21]);
-  } else if (this.coords.y === 2 && this.coords.x === 4) {
-    $("#description").html(descriptions[22]);
-  } else if (this.coords.y === 3 && this.coords.x === 4) {
-    $("#description").html(descriptions[23]);
-    // Forest Trap
-  } else if (this.coords.y === 4 && this.coords.x === 4) {
-    $("#description").html(descriptions[24]);
+  // In a grid of 5 x 5, the current id of a grid point is the column added to the row multiplied by five: (y + (x * 5)).
+  // The only issue is when we're out-of-bounds, so we have to check for that before doing the "new space" checks.
+  var current_description = this.coords.y + (this.coords.x * (max_y - min_y - 1));
+
+  // Special gridpoints here; best practice would be to combine this with a master "Descriptions" or "Gridpoints" object
+  // that contains descriptions, location data, and extra functions to run for each gridpoint.
+  if (this.coords.y === 4 && this.coords.x === 4) {
     this.health += 5;
     this.days -= 5;
   } else if (this.coords.y === 5 && this.coords.x === 3) {
     $("#west").trigger("click");
   } else if (this.coords.y === 3 && this.coords.x === 5) {
     $("#south").trigger("click");
-  } else {
+  }
+
+  // Ideally the following check would be done by offmap(), but that currently looks to see if we're trying to move
+  // PAST the maximum.
+  if (this.coords.y >= max_y || this.coords.x >= max_x || this.coords.y <= min_y || this.coords.x <= min_x) {
     $("#description").html("You're incredibly lost!");
+  }
+  else {
+    $("#description").html(descriptions[current_description]);
+    this.itemCheck();
+    this.winCheck();
+    this.forestTrap();
+    this.death();
   }
 };
 
