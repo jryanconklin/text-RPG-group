@@ -99,19 +99,37 @@ Adventurer.prototype.death = function() {
 };
 
 //Items
+// Define the item class, which has location (in X and Y), image to load, and message to display when picked up.
+function Item(coordY, coordX, image, message) {
+  this.coords = {
+    x: coordX,
+    y: coordY
+  };
+  this.image = image;
+  this.message = message;
+}
+
+// Define the global item infos.
+// It would probably be a better idea to instantiate these on game load, meaning we should
+// probably define a Game prototype, which then contains Players, Items, and Levels.
+var item_info = {
+  item1: new Item(4, 0, 'bluegem.png', "You've picked up the water stone!"),
+  item2: new Item(0, 0, 'redgem.png', "You've picked up the earth stone!"),
+  item3: new Item(0, 4, 'yellowgem.png', "You've picked up the sun stone!")
+};
 Adventurer.prototype.itemCheck = function() {
-  if (this.coords.y === 4 && this.coords.x === 0 && this.inventory.item1 === false) {
-    this.inventory.item1 = true;
-    $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
-  } else if (this.coords.y === 0 && this.coords.x === 0 && this.inventory.item2 === false) {
-    this.inventory.item2 = true;
-    $("#items").append("<img src='img/redgem.png' class='gems'></img>");
-  } else if (this.coords.y === 0 && this.coords.x === 4 && this.inventory.item3 === false) {
-    this.inventory.item3 = true;
-    $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
+  var player = this;
+  for (var item_name in item_info) {
+    var item_being_checked = item_info[item_name];
+    if (player.coords.y === item_being_checked.coords.y
+      && player.coords.x === item_being_checked.coords.x
+      && player.inventory[item_name] === false) {
+      player.inventory[item_name] = true;
+      $("#items").append("<img src='img/" + item_being_checked.image + "' class='gems' />");
+      $("#notices").html("<strong>" + item_being_checked.message + "</strong>");
+    }
   }
 };
-
 
 // Traps
 Adventurer.prototype.forestTrap = function() {
@@ -126,12 +144,12 @@ Adventurer.prototype.forestTrap = function() {
       this.days += 1;
       this.health -= 1;
       $("#west").trigger("click");
-      $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
+      $("#notices").html("<strong>You have been wandering around for 1 day. You feel more tired and your health has waned.</strong>");
     } else if (trapRoll > 3) {
       this.days += 2;
       this.health -= 2;
       $("#south").trigger("click");
-      $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
+      $("#notices").html("<strong>You have been wandering around for 2 days. You feel more tired and your health has waned.</strong>");
     }
   }
 };
