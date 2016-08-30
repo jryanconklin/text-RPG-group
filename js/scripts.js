@@ -229,51 +229,26 @@ Adventurer.prototype.winCheck = function() {
 
 
 $(document).ready(function() {
-  var items = [];
   var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, false, false, false, attributeGen(), attributeGen(), attributeGen());
 
   $("#wit").html(player.wit);
   $("#dexterity").html(player.dex);
   $("#strength").html(player.str);
 
-  $("#north").click(function() {
-    player.north();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.forestTrap();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#east").click(function() {
-    player.east();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.forestTrap();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#south").click(function() {
-    player.south();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#west").click(function() {
-    player.west();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
+  $(".direction").click(function() {
+    var direction = $(this).attr('id');
+    player[direction]();
+    player.postMove();
   });
 
 
 
 }); // End Document.Ready
+
+// Do various checks and updates after grid location update.
+Adventurer.prototype.postMove = function() {
+  $("#notices").html("");
+  this.spaceCheck();
+  $("#health").html(this.health);
+  $("#days").html(this.days);
+};
