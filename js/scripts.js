@@ -65,9 +65,6 @@ Adventurer.prototype.move = function(direction) {
     if (!this.offmap(new_coords)) {
       this.coords = new_coords;
     }
-    else {
-      $("#notices").html("Offmap");
-    }
   }
   else {
     $("#notices").html("You tried to go an invalid direction!");
@@ -78,13 +75,11 @@ Adventurer.prototype.move = function(direction) {
 
 // Check to see if we've strayed off of the grid, and, if so, reduce health.
 Adventurer.prototype.offmap = function(new_coords) {
-  $("#notices").html("Bloop health.");
   var offMap = false;
   if (new_coords.y > max_y
     || new_coords.y < min_y
     || new_coords.x > max_x
     || new_coords.x < min_x) {
-    $("#notices").html("Reducing health.");
     this.health -= 1;
     offMap = true;
   }
