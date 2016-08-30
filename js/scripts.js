@@ -3,56 +3,62 @@
 // Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, days, item1, item2, item3, str, dex, wit) {
+function Adventurer(name, xCoord, yCoord, health, days, item1, item2, item3, str, dex, wit) {
   this.name = name;
-  this.xCord = xCord;
-  this.yCord = yCord;
+  this.coords = {
+    x: xCoord,
+    y: yCoord
+  };
   this.health = health;
   this.days = days;
-  this.item1 = item1;
-  this.item2 = item2;
-  this.item3 = item3;
-  this.str = str; // if time
-  this.dex = dex; // if time
-  this.wit = wit; // if time
+  this.inventory = {
+    item1: item1,
+    item2: item2,
+    item3: item3
+  };
+  this.attributes = {
+    str: str,
+    dex: dex,
+    wit: wit
+  }; // if time
 }
 
 Adventurer.prototype.north = function() {
-  if (this.yCord > 4) {
+  if (this.coords.y > 4) {
     this.health -= 1;
     this.days += 1;
   } else {
-    this.yCord += 1;
+    this.coords.y += 1;
     this.days += 1;
   }
 };
 
 Adventurer.prototype.south = function() {
-  if (this.yCord < 0) {
+  if (this.coords.y < 0) {
     this.health -= 1;
     this.days += 1;
   } else {
-    this.yCord -= 1;
+    this.coords.y -= 1;
     this.days += 1;
   }
 };
 
 Adventurer.prototype.east = function() {
-  if (this.xCord > 4) {
+  if (this.coords.x > 4) {
     this.health -= 1;
     this.days += 1;
   } else {
-    this.xCord += 1;
+    this.coords.x += 1;
     this.days += 1;
   }
 };
 
 Adventurer.prototype.west = function() {
-  if (this.xCord < 0) {
+  if (this.coords.x < 0) {
     this.health -= 1;
     this.days += 1;
   } else {
-    this.xCord -= 1;
+    this.coords.x -= 1;
     this.days += 1;
   }
 };
@@ -70,14 +76,14 @@ Adventurer.prototype.death = function() {
 
 //Items
 Adventurer.prototype.itemCheck = function() {
-  if (this.yCord === 4 && this.xCord === 0 && this.item1 === false) {
-    this.item1 = true;
+  if (this.coords.y === 4 && this.coords.x === 0 && this.inventory.item1 === false) {
+    this.inventory.item1 = true;
     $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 0 && this.item2 === false) {
-    this.item2 = true;
+  } else if (this.coords.y === 0 && this.coords.x === 0 && this.inventory.item2 === false) {
+    this.inventory.item2 = true;
     $("#items").append("<img src='img/redgem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 4 && this.item3 === false) {
-    this.item3 = true;
+  } else if (this.coords.y === 0 && this.coords.x === 4 && this.inventory.item3 === false) {
+    this.inventory.item3 = true;
     $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
   }
 };
@@ -85,12 +91,12 @@ Adventurer.prototype.itemCheck = function() {
 
 // Traps
 Adventurer.prototype.forestTrap = function() {
-  if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
+  if (this.coords.y === 4 && this.coords.x === 3 || this.coords.y === 3 && this.coords.x === 4) {
       var trapRoll = Math.floor(Math.random() * 7) + 1;
 
-      if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
+      if (trapRoll === 7 && this.coords.y === 4 && this.coords.x === 3) {
       $("#east").trigger("click");
-    } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
+    } else if (trapRoll === 7 && this.coords.y === 3 && this.coords.x === 4) {
       $("#north").trigger("click");
     } else if (trapRoll <= 3) {
       this.days += 1;
@@ -142,73 +148,73 @@ var descriptions = [
 
 
 Adventurer.prototype.spaceCheck = function() {
-  if (this.yCord === 0 && this.xCord === 0) {
+  if (this.coords.y === 0 && this.coords.x === 0) {
     $("#description").html(descriptions[0]);
     // The Earth Stone
     this.itemCheck();
     $("#notices").html("<strong>You have picked up the earth stone!</strong>");
-  } else if (this.yCord === 1 && this.xCord === 0) {
+  } else if (this.coords.y === 1 && this.coords.x === 0) {
     $("#description").html(descriptions[1]);
-  } else if (this.yCord === 2 && this.xCord === 0) {
+  } else if (this.coords.y === 2 && this.coords.x === 0) {
     $("#description").html(descriptions[2]);
-  } else if (this.yCord === 3 && this.xCord === 0) {
+  } else if (this.coords.y === 3 && this.coords.x === 0) {
     $("#description").html(descriptions[3]);
-  } else if (this.yCord === 4 && this.xCord === 0) {
+  } else if (this.coords.y === 4 && this.coords.x === 0) {
     $("#description").html(descriptions[4]);
     // The Water Stone Location
     this.itemCheck();
     $("#notices").html("<strong>You have picked up the water stone!</strong>");
-  } else if (this.yCord === 0 && this.xCord === 1) {
+  } else if (this.coords.y === 0 && this.coords.x === 1) {
     $("#description").html(descriptions[5]);
-  } else if (this.yCord === 1 && this.xCord === 1) {
+  } else if (this.coords.y === 1 && this.coords.x === 1) {
     $("#description").html(descriptions[6]);
-  } else if (this.yCord === 2 && this.xCord === 1) {
+  } else if (this.coords.y === 2 && this.coords.x === 1) {
     $("#description").html(descriptions[7]);
-  } else if (this.yCord === 3 && this.xCord === 1) {
+  } else if (this.coords.y === 3 && this.coords.x === 1) {
     $("#description").html(descriptions[8]);
-  } else if (this.yCord === 4 && this.xCord === 1) {
+  } else if (this.coords.y === 4 && this.coords.x === 1) {
     $("#description").html(descriptions[9]);
-  } else if (this.yCord === 0 && this.xCord === 2) {
+  } else if (this.coords.y === 0 && this.coords.x === 2) {
     $("#description").html(descriptions[10]);
-  } else if (this.yCord === 1 && this.xCord === 2) {
+  } else if (this.coords.y === 1 && this.coords.x === 2) {
     $("#description").html(descriptions[11]);
-  } else if (this.yCord === 2 && this.xCord === 2) {
+  } else if (this.coords.y === 2 && this.coords.x === 2) {
     $("#description").html(descriptions[12]);
     this.winCheck();
-  } else if (this.yCord === 3 && this.xCord === 2) {
+  } else if (this.coords.y === 3 && this.coords.x === 2) {
     $("#description").html(descriptions[13]);
-  } else if (this.yCord === 4 && this.xCord === 2) {
+  } else if (this.coords.y === 4 && this.coords.x === 2) {
     $("#description").html(descriptions[14]);
-  } else if (this.yCord === 0 && this.xCord === 3) {
+  } else if (this.coords.y === 0 && this.coords.x === 3) {
     $("#description").html(descriptions[15]);
-  } else if (this.yCord === 1 && this.xCord === 3) {
+  } else if (this.coords.y === 1 && this.coords.x === 3) {
     $("#description").html(descriptions[16]);
-  } else if (this.yCord === 2 && this.xCord === 3) {
+  } else if (this.coords.y === 2 && this.coords.x === 3) {
     $("#description").html(descriptions[17]);
-  } else if (this.yCord === 3 && this.xCord === 3) {
+  } else if (this.coords.y === 3 && this.coords.x === 3) {
     $("#description").html(descriptions[18]);
-  } else if (this.yCord === 4 && this.xCord === 3) {
+  } else if (this.coords.y === 4 && this.coords.x === 3) {
     $("#description").html(descriptions[19]);
     // Forest Trap
-  } else if (this.yCord === 0 && this.xCord === 4) {
+  } else if (this.coords.y === 0 && this.coords.x === 4) {
     $("#description").html(descriptions[20]);
     // The Sun Stone
     this.itemCheck();
     $("#notices").html("<strong>You have picked up the sun stone!</strong>");
-  } else if (this.yCord === 1 && this.xCord === 4) {
+  } else if (this.coords.y === 1 && this.coords.x === 4) {
     $("#description").html(descriptions[21]);
-  } else if (this.yCord === 2 && this.xCord === 4) {
+  } else if (this.coords.y === 2 && this.coords.x === 4) {
     $("#description").html(descriptions[22]);
-  } else if (this.yCord === 3 && this.xCord === 4) {
+  } else if (this.coords.y === 3 && this.coords.x === 4) {
     $("#description").html(descriptions[23]);
     // Forest Trap
-  } else if (this.yCord === 4 && this.xCord === 4) {
+  } else if (this.coords.y === 4 && this.coords.x === 4) {
     $("#description").html(descriptions[24]);
     this.health += 5;
     this.days -= 5;
-  } else if (this.yCord === 5 && this.xCord === 3) {
+  } else if (this.coords.y === 5 && this.coords.x === 3) {
     $("#west").trigger("click");
-  } else if (this.yCord === 3 && this.xCord === 5) {
+  } else if (this.coords.y === 3 && this.coords.x === 5) {
     $("#south").trigger("click");
   } else {
     $("#description").html("You're incredibly lost!");
@@ -217,7 +223,7 @@ Adventurer.prototype.spaceCheck = function() {
 
 // Winning!
 Adventurer.prototype.winCheck = function() {
-  if (this.yCord === 2 && this.xCord === 2 && this.item1 === true && this.item2 === true && this.item3 === true) {
+  if (this.coords.y === 2 && this.coords.x === 2 && this.inventory.item1 === true && this.inventory.item2 === true && this.inventory.item3 === true) {
     $("#description").html("<h3 class='text-center'>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The colors begin to merge as you go blind, because the gems are slowing returning to their homes. The thing that now posseses your body only smiles, before turning its back to you and leaving you alone in the darkness. <br><br>You have won.</h3><br><br><h3 class='text-center'>You won with <span id='health'></span> health and it took you <span id='days'></span> days</h3>");
     $("footer").hide();
   }
@@ -231,9 +237,9 @@ Adventurer.prototype.winCheck = function() {
 $(document).ready(function() {
   var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, false, false, false, attributeGen(), attributeGen(), attributeGen());
 
-  $("#wit").html(player.wit);
-  $("#dexterity").html(player.dex);
-  $("#strength").html(player.str);
+  $("#wit").html(player.attributes.wit);
+  $("#dexterity").html(player.attributes.dex);
+  $("#strength").html(player.attributes.str);
 
   $(".direction").click(function() {
     var direction = $(this).attr('id');
