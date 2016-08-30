@@ -223,8 +223,6 @@ Adventurer.prototype.postMove = function() {
   this.spaceCheck();
   $("#health").html(this.health);
   $("#days").html(this.days);
-  $("#coordX").html(this.coords.x);
-  $("#coordY").html(this.coords.y);
 };
 
 // Winning!
