@@ -1,62 +1,92 @@
 // Business Logic
 
-// Problem: Design a method for moving a player object through a 2D space, serving text to page based on: player location, player health and hazard checking.
+// Problem: Design a method for moving a player object through a 2D space, serving text to page based on:
+// player location, player health and hazard checking.
+
+// Global variables that define the bounds of the grid. Touching any of these constraints hurts and sends a
+// "you are lost" message.
+// A much better setup would be to have a "Level" class where these could be defined on a per-level basis.
+var max_x = 5;
+var max_y = 5;
+var min_x = -1;
+var min_y = -1;
 
 // Adventurer Constructor, defines the player variable.
-function Adventurer(name, xCord, yCord, health, days, item1, item2, item3, str, dex, wit) {
+function Adventurer(name, xCoord, yCoord, health, days, item1, item2, item3, str, dex, wit) {
   this.name = name;
-  this.xCord = xCord;
-  this.yCord = yCord;
+  this.coords = {
+    x: xCoord,
+    y: yCoord
+  };
   this.health = health;
   this.days = days;
-  this.item1 = item1;
-  this.item2 = item2;
-  this.item3 = item3;
-  this.str = str; // if time
-  this.dex = dex; // if time
-  this.wit = wit; // if time
+  this.inventory = {
+    item1: item1,
+    item2: item2,
+    item3: item3
+  };
+  this.attributes = {
+    str: str,
+    dex: dex,
+    wit: wit
+  }; // if time
 }
 
-Adventurer.prototype.north = function() {
-  if (this.yCord > 4) {
-    this.health -= 1;
+Adventurer.prototype.move = function(direction) {
+  var moved = 0; // Track how far we move why not.
+  var new_coords = { // We will check this value against offMap.
+    x: this.coords.x,
+    y: this.coords.y
+  };
+  var valid_directions = {
+    north: {
+      y: 1
+    },
+    south: {
+      y: -1
+    },
+    east: {
+      x: 1
+    },
+    west: {
+      x: -1
+    }
+  };
+
+  // First see if we were even sent a valid direction.
+  if (valid_directions[direction]) {
+    // We did, so add a day, then, if we're on the map, try to move.
     this.days += 1;
-  } else {
-    this.yCord += 1;
-    this.days += 1;
+    for (var coord in valid_directions[direction]) {
+      // Add any coordinates in a specific direction to the Player's coordinates.
+      new_coords[coord] += valid_directions[direction][coord];
+      moved += valid_directions[direction][coord];
+    }
+    if (!this.offmap(new_coords)) {
+      this.coords = new_coords;
+    }
+    else {
+      this.health -= 1;
+    }
   }
+  else {
+    $("#notices").html("You tried to go an invalid direction!");
+  }
+
+  return moved;
 };
 
-Adventurer.prototype.south = function() {
-  if (this.yCord < 0) {
-    this.health -= 1;
-    this.days += 1;
-  } else {
-    this.yCord -= 1;
-    this.days += 1;
+// Check to see if we've strayed off of the grid, and, if so, reduce health.
+Adventurer.prototype.offmap = function(new_coords) {
+  var offMap = false;
+  if (new_coords.y > max_y
+    || new_coords.y < min_y
+    || new_coords.x > max_x
+    || new_coords.x < min_x) {
+    offMap = true;
   }
+  return offMap;
 };
-
-Adventurer.prototype.east = function() {
-  if (this.xCord > 4) {
-    this.health -= 1;
-    this.days += 1;
-  } else {
-    this.xCord += 1;
-    this.days += 1;
-  }
-};
-
-Adventurer.prototype.west = function() {
-  if (this.xCord < 0) {
-    this.health -= 1;
-    this.days += 1;
-  } else {
-    this.xCord -= 1;
-    this.days += 1;
-  }
-};
-
 
 //Player Death
 Adventurer.prototype.death = function() {
@@ -69,39 +99,57 @@ Adventurer.prototype.death = function() {
 };
 
 //Items
+// Define the item class, which has location (in X and Y), image to load, and message to display when picked up.
+function Item(coordY, coordX, image, message) {
+  this.coords = {
+    x: coordX,
+    y: coordY
+  };
+  this.image = image;
+  this.message = message;
+}
+
+// Define the global item infos.
+// It would probably be a better idea to instantiate these on game load, meaning we should
+// probably define a Game prototype, which then contains Players, Items, and Levels.
+var item_info = {
+  item1: new Item(4, 0, 'bluegem.png', "You've picked up the water stone!"),
+  item2: new Item(0, 0, 'redgem.png', "You've picked up the earth stone!"),
+  item3: new Item(0, 4, 'yellowgem.png', "You've picked up the sun stone!")
+};
 Adventurer.prototype.itemCheck = function() {
-  if (this.yCord === 4 && this.xCord === 0 && this.item1 === false) {
-    this.item1 = true;
-    $("#items").append("<img src='img/bluegem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 0 && this.item2 === false) {
-    this.item2 = true;
-    $("#items").append("<img src='img/redgem.png' class='gems'></img>");
-  } else if (this.yCord === 0 && this.xCord === 4 && this.item3 === false) {
-    this.item3 = true;
-    $("#items").append("<img src='img/yellowgem.png' class='gems'></img>");
+  var player = this;
+  for (var item_name in item_info) {
+    var item_being_checked = item_info[item_name];
+    if (player.coords.y === item_being_checked.coords.y
+      && player.coords.x === item_being_checked.coords.x
+      && player.inventory[item_name] === false) {
+      player.inventory[item_name] = true;
+      $("#items").append("<img src='img/" + item_being_checked.image + "' class='gems' />");
+      $("#notices").html("<strong>" + item_being_checked.message + "</strong>");
+    }
   }
 };
 
-
 // Traps
 Adventurer.prototype.forestTrap = function() {
-  if (this.yCord === 4 && this.xCord === 3 || this.yCord === 3 && this.xCord === 4) {
+  if (this.coords.y === 4 && this.coords.x === 3 || this.coords.y === 3 && this.coords.x === 4) {
       var trapRoll = Math.floor(Math.random() * 7) + 1;
 
-      if (trapRoll === 7 && this.yCord === 4 && this.xCord === 3) {
+      if (trapRoll === 7 && this.coords.y === 4 && this.coords.x === 3) {
       $("#east").trigger("click");
-    } else if (trapRoll === 7 && this.yCord === 3 && this.xCord === 4) {
+    } else if (trapRoll === 7 && this.coords.y === 3 && this.coords.x === 4) {
       $("#north").trigger("click");
     } else if (trapRoll <= 3) {
       this.days += 1;
       this.health -= 1;
       $("#west").trigger("click");
-      $("#notices").html("<strong>You have been wondering around for 1 day. You feel more tired and your health has waned.</strong>");
+      $("#notices").html("<strong>You have been wandering around for 1 day. You feel more tired and your health has waned.</strong>");
     } else if (trapRoll > 3) {
       this.days += 2;
       this.health -= 2;
       $("#south").trigger("click");
-      $("#notices").html("<strong>You have been wondering around for 2 days. You feel more tired and your health has waned.</strong>");
+      $("#notices").html("<strong>You have been wandering around for 2 days. You feel more tired and your health has waned.</strong>");
     }
   }
 };
@@ -139,85 +187,47 @@ var descriptions = [
   "You step out of the woods into a circular clearing! You must be one of the luckiest people ever. Do you realize how slim your chances were of finding this place? You see beautiful flowers everywhere. Are those, are those faeries?! No stupid, they are fireflies. Get your head back in the game. You see a lot of honeysuckles and drink from them. You feel your health and energy improve. That's good, because finding your way out of here isn't going to be easy."
 ];
 
-
-
 Adventurer.prototype.spaceCheck = function() {
-  if (this.yCord === 0 && this.xCord === 0) {
-    $("#description").html(descriptions[0]);
-    // The Earth Stone
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the earth stone!</strong>");
-  } else if (this.yCord === 1 && this.xCord === 0) {
-    $("#description").html(descriptions[1]);
-  } else if (this.yCord === 2 && this.xCord === 0) {
-    $("#description").html(descriptions[2]);
-  } else if (this.yCord === 3 && this.xCord === 0) {
-    $("#description").html(descriptions[3]);
-  } else if (this.yCord === 4 && this.xCord === 0) {
-    $("#description").html(descriptions[4]);
-    // The Water Stone Location
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the water stone!</strong>");
-  } else if (this.yCord === 0 && this.xCord === 1) {
-    $("#description").html(descriptions[5]);
-  } else if (this.yCord === 1 && this.xCord === 1) {
-    $("#description").html(descriptions[6]);
-  } else if (this.yCord === 2 && this.xCord === 1) {
-    $("#description").html(descriptions[7]);
-  } else if (this.yCord === 3 && this.xCord === 1) {
-    $("#description").html(descriptions[8]);
-  } else if (this.yCord === 4 && this.xCord === 1) {
-    $("#description").html(descriptions[9]);
-  } else if (this.yCord === 0 && this.xCord === 2) {
-    $("#description").html(descriptions[10]);
-  } else if (this.yCord === 1 && this.xCord === 2) {
-    $("#description").html(descriptions[11]);
-  } else if (this.yCord === 2 && this.xCord === 2) {
-    $("#description").html(descriptions[12]);
-    this.winCheck();
-  } else if (this.yCord === 3 && this.xCord === 2) {
-    $("#description").html(descriptions[13]);
-  } else if (this.yCord === 4 && this.xCord === 2) {
-    $("#description").html(descriptions[14]);
-  } else if (this.yCord === 0 && this.xCord === 3) {
-    $("#description").html(descriptions[15]);
-  } else if (this.yCord === 1 && this.xCord === 3) {
-    $("#description").html(descriptions[16]);
-  } else if (this.yCord === 2 && this.xCord === 3) {
-    $("#description").html(descriptions[17]);
-  } else if (this.yCord === 3 && this.xCord === 3) {
-    $("#description").html(descriptions[18]);
-  } else if (this.yCord === 4 && this.xCord === 3) {
-    $("#description").html(descriptions[19]);
-    // Forest Trap
-  } else if (this.yCord === 0 && this.xCord === 4) {
-    $("#description").html(descriptions[20]);
-    // The Sun Stone
-    this.itemCheck();
-    $("#notices").html("<strong>You have picked up the sun stone!</strong>");
-  } else if (this.yCord === 1 && this.xCord === 4) {
-    $("#description").html(descriptions[21]);
-  } else if (this.yCord === 2 && this.xCord === 4) {
-    $("#description").html(descriptions[22]);
-  } else if (this.yCord === 3 && this.xCord === 4) {
-    $("#description").html(descriptions[23]);
-    // Forest Trap
-  } else if (this.yCord === 4 && this.xCord === 4) {
-    $("#description").html(descriptions[24]);
+  // In a grid of 5 x 5, the current id of a grid point is the column added to the row multiplied by five: (y + (x * 5)).
+  // The only issue is when we're out-of-bounds, so we have to check for that before doing the "new space" checks.
+  var current_description = this.coords.y + (this.coords.x * (max_y - min_y - 1));
+
+  // Special gridpoints here; best practice would be to combine this with a master "Descriptions" or "Gridpoints" object
+  // that contains descriptions, location data, and extra functions to run for each gridpoint.
+  if (this.coords.y === 4 && this.coords.x === 4) {
     this.health += 5;
     this.days -= 5;
-  } else if (this.yCord === 5 && this.xCord === 3) {
+  } else if (this.coords.y === 5 && this.coords.x === 3) {
     $("#west").trigger("click");
-  } else if (this.yCord === 3 && this.xCord === 5) {
+  } else if (this.coords.y === 3 && this.coords.x === 5) {
     $("#south").trigger("click");
-  } else {
+  }
+
+  // Ideally the following check would be done by offmap(), but that currently looks to see if we're trying to move
+  // PAST the maximum.
+  if (this.coords.y >= max_y || this.coords.x >= max_x || this.coords.y <= min_y || this.coords.x <= min_x) {
     $("#description").html("You're incredibly lost!");
   }
+  else {
+    $("#description").html(descriptions[current_description]);
+    this.itemCheck();
+    this.winCheck();
+    this.forestTrap();
+    this.death();
+  }
+};
+
+// Do various checks and updates after grid location update.
+Adventurer.prototype.postMove = function() {
+  $("#notices").html("");
+  this.spaceCheck();
+  $("#health").html(this.health);
+  $("#days").html(this.days);
 };
 
 // Winning!
 Adventurer.prototype.winCheck = function() {
-  if (this.yCord === 2 && this.xCord === 2 && this.item1 === true && this.item2 === true && this.item3 === true) {
+  if (this.coords.y === 2 && this.coords.x === 2 && this.inventory.item1 === true && this.inventory.item2 === true && this.inventory.item3 === true) {
     $("#description").html("<h3 class='text-center'>You have returned to the stone idol with your prize. Your stomach twists again in pain as you approach the monolith. The pain eases as you place the three gems into the empty sockets. Your vision blurs and time seems to stand still. When you open them again, you look through colors of blue, red and yellow down at yourself. The colors begin to merge as you go blind, because the gems are slowing returning to their homes. The thing that now posseses your body only smiles, before turning its back to you and leaving you alone in the darkness. <br><br>You have won.</h3><br><br><h3 class='text-center'>You won with <span id='health'></span> health and it took you <span id='days'></span> days</h3>");
     $("footer").hide();
   }
@@ -229,49 +239,16 @@ Adventurer.prototype.winCheck = function() {
 
 
 $(document).ready(function() {
-  var items = [];
   var player = new Adventurer("Sierra Von Grey", 2, 2, 10, 0, false, false, false, attributeGen(), attributeGen(), attributeGen());
 
-  $("#wit").html(player.wit);
-  $("#dexterity").html(player.dex);
-  $("#strength").html(player.str);
+  $("#wit").html(player.attributes.wit);
+  $("#dexterity").html(player.attributes.dex);
+  $("#strength").html(player.attributes.str);
 
-  $("#north").click(function() {
-    player.north();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.forestTrap();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#east").click(function() {
-    player.east();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.forestTrap();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#south").click(function() {
-    player.south();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
-  });
-
-  $("#west").click(function() {
-    player.west();
-    $("#notices").html("");
-    player.spaceCheck();
-    player.death();
-    $("#health").html(player.health);
-    $("#days").html(player.days);
+  $(".direction").click(function() {
+    var direction = $(this).attr('id');
+    player.move(direction); // This returns an "amount moved" if we want to do extra with that.
+    player.postMove();
   });
 
 
